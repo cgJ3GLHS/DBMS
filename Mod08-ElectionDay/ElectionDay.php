@@ -27,7 +27,7 @@ function DisplayInstructions()
 {
   # display explanation/instructions
   $instructions = <<<"HEREYAGO"
-    <p>Put some user instructions here!</p>
+    <p>Election day has arrived, cast your ballot here.  Vote early and vote often!</p>
 
 HEREYAGO;
   print $instructions;
@@ -52,6 +52,7 @@ function ReadFromFile($filename)
   return $data;
 }
 
+
 #------------------------------------------------------------------------------
 # Function WriteToFile
 #
@@ -63,11 +64,9 @@ function ReadFromFile($filename)
 #------------------------------------------------------------------------------
 function WriteToFile($filename, $data)
 {
-  # convert data to a string...
-  
   if (is_writable($filename))
   {
-    if (!file_put_contents($filename, $strOut, LOCK_EX))
+    if (!file_put_contents($filename, $data, FILE_APPEND | LOCK_EX))
     {
       return false;
     }
@@ -76,6 +75,101 @@ function WriteToFile($filename, $data)
       return true;
     }
   }
+}
+
+
+#------------------------------------------------------------------------------
+# Function WriteVote
+#
+# Adds a vote with timestamp to the file
+#
+# IN: name of file, value of vote
+#
+# OUT: false if write failed, otherwise true
+#------------------------------------------------------------------------------
+function WriteVote($filename, $candidate)
+{
+  # convert data to a string...
+  $data  = time();
+  $data .= chr(31);
+  $data .= $candidate;
+  $data .= chr(30);
+  # $data .= "\n"; # for fun trying record delimiter character instead of newline...
+  
+  if (WriteToFile($filename, $data))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+
+#------------------------------------------------------------------------------
+# Function DisplayResults
+#
+# Displays the current total election votes to the user
+#
+# IN: file name to load voting data from
+#
+# OUT: results printed to screen
+#------------------------------------------------------------------------------
+function DisplayResults($filename)
+{
+  # read data from file
+  $fileData = ReadFromFile($filename);
+  
+  # Parse data into an array...
+  $recordDelimeter = chr(30);
+  $fieldDelimeter  = chr(31);
+  
+  # first split by record recordDelimeter
+  $regex = '/['.$recordDelimeter.']+/';
+  $fileArray = preg_split($regex, $fileData[0]);
+  
+  # pop last item as final delimiter will have no data after
+  array_pop($fileArray);
+  
+  # then drop parse through array and aplit off the vote from the timestamp
+  foreach ($fileArray as $k => $v)
+  {
+    $oldval = $v;
+    $newval = substr(  $oldval,
+                       strpos($oldval, $fieldDelimeter) + 1,
+                       strlen($oldval) - strpos($oldval, $fieldDelimeter)
+                    );
+    $fileArray[$k] = $newval;
+  }
+  
+  # count results from array
+  # --------------------------
+  
+  # initialize all existing votes to 0
+  foreach ($fileArray as $k => $v)
+  {
+    $resultsArray[$v] = 0;
+  }
+  
+  # then increment counts for all votes
+  foreach ($fileArray as $k => $v)
+  {
+    $resultsArray[$v] += 1;
+  }
+  
+  # sort final result array
+  ksort($resultsArray);
+  
+  # display results
+  # ----------------
+  print "Current votes:<br>\n";
+  print "<table border=\"1\">\n";
+  foreach ($resultsArray as $k => $v)
+  {
+    print "<tr><td>$k</td><td>$v</td></tr>\n";
+  }
+  print "</table>\n";
 }
 
 #------------------------------------------------------------------------------
@@ -94,6 +188,10 @@ function DisplayForm()
   print "\n";
   
   # form elements here...
+  print '<input type="radio" name="candidate" value="A">Candidate A<br>';
+  print "\n";
+  print '<input type="radio" name="candidate" value="B">Candidate B<br>';
+  print "\n";
   
   # submit button
   print '      <input type="submit" name="submit" value="submit">';
@@ -144,10 +242,10 @@ function FilterInputs(&$formdata)
 function FormDataIsValid(&$formdata)
 {
   if (   # input field should be set
-         isset($formdata['fieldNameHere'])
+         isset($formdata['candidate'])
          
          # regex checking form data
-      && preg_match('/regexHere/', $formdata['fieldNameHere'])
+      && preg_match('/^[AB]$/', $formdata['candidate'])
      )
   {
     return true;
@@ -164,14 +262,14 @@ function FormDataIsValid(&$formdata)
 #------------------------------------------------------------------------------
 
 # add header and main menu
-include('./sharedres/header.html');
-include('./menu/menu.html');
+include('../sharedres/header.html');
+include('../menu/menu.html');
 
 # display explanation/instructions
 DisplayInstructions();
 
-# load data from file
-$filename = "../path/to/file.txt";
+# define data file
+$filename = "../../electionDay/electionData.txt";
 
 
 # validate inputs, if any
@@ -193,20 +291,31 @@ if (   $_SERVER['REQUEST_METHOD'] == 'POST'
   }
 }
 
+
 # if we got valid input, process that data
 if ($passedValidation)
 {
-  # do some processing
+  # get candidate that was voted for
+  $candidate = $_POST['candidate'];
+  
+  # record the vote
+  WriteVote($filename, $candidate);
+  
+  # display the results
+  DisplayResults($filename);
+  
 }
 else # otherwise, if there was no valid input
 {
   # do whatever else needs doing if not processing input
+  
+  # Display Form
+  DisplayForm();
 }
 
-# Display Form
-DisplayForm();
 
-include('./sharedres/footer.html');
+
+include('../sharedres/footer.html');
 
 ?>
 <!-- ################ END ElectionDay.php ################ -->
