@@ -64,8 +64,6 @@ function ReadFromFile($filename)
 #------------------------------------------------------------------------------
 function WriteToFile($filename, $data)
 {
-  print "DEBUG in writetofile! <br>";
-  
   if (is_writable($filename))
   {
     if (!file_put_contents($filename, $data, FILE_APPEND | LOCK_EX))
@@ -90,7 +88,7 @@ function WriteToFile($filename, $data)
 # OUT: false if write failed, otherwise true
 #------------------------------------------------------------------------------
 function WriteVote($filename, $candidate)
-{print "DEBUG in writevote!<br>";
+{
   # convert data to a string...
   $data  = time();
   $data .= chr(31);
@@ -98,7 +96,6 @@ function WriteVote($filename, $candidate)
   $data .= chr(30);
   # $data .= "\n"; # for fun trying record delimiter character instead of newline...
   
-  print "DEBUG data is $data <br>";
   if (WriteToFile($filename, $data))
   {
     return true;
@@ -115,15 +112,14 @@ function WriteVote($filename, $candidate)
 #
 # Displays the current total election votes to the user
 #
-# IN: 
+# IN: file name to load voting data from
 #
-# OUT: 
+# OUT: results printed to screen
 #------------------------------------------------------------------------------
 function DisplayResults($filename)
 {
   # read data from file
   $fileData = ReadFromFile($filename);
-  print "DEBUG filedata is $fileData[0] <br>";
   
   # Parse data into an array...
   $recordDelimeter = chr(30);
@@ -132,7 +128,6 @@ function DisplayResults($filename)
   # first split by record recordDelimeter
   $regex = '/['.$recordDelimeter.']+/';
   $fileArray = preg_split($regex, $fileData[0]);
-  print "DEBUG fileArray is <br>";
   
   # pop last item as final delimiter will have no data after
   array_pop($fileArray);
@@ -145,15 +140,36 @@ function DisplayResults($filename)
                        strpos($oldval, $fieldDelimeter) + 1,
                        strlen($oldval) - strpos($oldval, $fieldDelimeter)
                     );
-  # DEBUG
-  print "DEBUG - newval is $newval <br>";
     $fileArray[$k] = $newval;
   }
   
   # count results from array
+  # --------------------------
+  
+  # initialize all existing votes to 0
+  foreach ($fileArray as $k => $v)
+  {
+    $resultsArray[$v] = 0;
+  }
+  
+  # then increment counts for all votes
+  foreach ($fileArray as $k => $v)
+  {
+    $resultsArray[$v] += 1;
+  }
+  
+  # sort final result array
+  ksort($resultsArray);
   
   # display results
-  
+  # ----------------
+  print "Current votes:<br>\n";
+  print "<table border=\"1\">\n";
+  foreach ($resultsArray as $k => $v)
+  {
+    print "<tr><td>$k</td><td>$v</td></tr>\n";
+  }
+  print "</table>\n";
 }
 
 #------------------------------------------------------------------------------
