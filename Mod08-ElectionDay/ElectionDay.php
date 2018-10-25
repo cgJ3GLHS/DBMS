@@ -188,9 +188,13 @@ function DisplayForm()
   print "\n";
   
   # form elements here...
-  print '<input type="radio" name="candidate" value="A">Candidate A<br>';
+  print '<input type="radio" name="candidate" value="A">Austin Parks Project<br>';
   print "\n";
-  print '<input type="radio" name="candidate" value="B">Candidate B<br>';
+  print '<input type="radio" name="candidate" value="B">Old Radio Project<br>';
+  print "\n";
+   print '<input type="radio" name="candidate" value="B">Moto GP Project<br>';
+  print "\n";
+   print '<input type="radio" name="candidate" value="B">Medieval Latin Music Projectt<br>';
   print "\n";
   
   # submit button
