@@ -188,13 +188,13 @@ function DisplayForm()
   print "\n";
   
   # form elements here...
-  print '<input type="radio" name="candidate" value="A">Austin Hiking Trails Project<br>';
+  print '      <input type="radio" name="candidate" value="Parks">Austin Parks Project<br>';
   print "\n";
-  print '<input type="radio" name="candidate" value="B">Old Radio Project<br>';
+  print '      <input type="radio" name="candidate" value="OTR">Old Radio Project<br>';
   print "\n";
-   print '<input type="radio" name="candidate" value="B">Moto GP Project<br>';
+  print '      <input type="radio" name="candidate" value="MotoGP">Moto GP Project<br>';
   print "\n";
-   print '<input type="radio" name="candidate" value="B">Medieval Latin Music Project<br>';
+  print '      <input type="radio" name="candidate" value="MedievalMusic">Medieval Latin Music Projectt<br>';
   print "\n";
   
   # submit button
@@ -249,7 +249,7 @@ function FormDataIsValid(&$formdata)
          isset($formdata['candidate'])
          
          # regex checking form data
-      && preg_match('/^[AB]|"Parks|OTR|MotoGP|MedievalMusic$/', $formdata['candidate'])
+      && preg_match('/^[AB]|Parks|OTR|MotoGP|MedievalMusic$/', $formdata['candidate'])
      )
   {
     return true;
