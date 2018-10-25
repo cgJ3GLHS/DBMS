@@ -249,7 +249,7 @@ function FormDataIsValid(&$formdata)
          isset($formdata['candidate'])
          
          # regex checking form data
-      && preg_match('/^[AB]$/', $formdata['candidate'])
+      && preg_match('/^[AB]|"Parks|OTR|MotoGP|MedievalMusic$/', $formdata['candidate'])
      )
   {
     return true;
