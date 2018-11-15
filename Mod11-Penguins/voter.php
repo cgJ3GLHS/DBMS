@@ -35,7 +35,7 @@ if (isset($_GET['species'])) {
           print "</tr>";
      }
      print "</table>";
-     
+    # here is an edited line 
 } else {
      print "Choose your favorite penguin:";
      print "<form method=GET action='voter.php'><select name='species'>";
