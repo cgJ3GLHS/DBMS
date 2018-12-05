@@ -44,7 +44,8 @@ CREATE TABLE Trails
     off_leash     BOOLEAN,
     bag_stations  BOOLEAN,
     
-    CONSTRAINT fk_trail_diff FOREIGN KEY (difficulty_id) REFERENCES Difficulties (difficulty_id)
+    CONSTRAINT fk_trail_diff FOREIGN KEY (difficulty_id) REFERENCES Difficulties (difficulty_id),
+    CONSTRAINT trails_unique UNIQUE (name(100), address(100))
   )
 ;
 
@@ -52,28 +53,36 @@ CREATE TABLE Parks
   ( 
     park_id      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     park_name    CHAR(240) NOT NULL,
-    address      VARCHAR(255)
+    address      VARCHAR(255),
+    
+    CONSTRAINT parks_unique UNIQUE (park_name(100), address(100))
   )
 ;
 
 CREATE TABLE Uses
   ( 
     use_id        INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    activity_name VARCHAR(255) NOT NULL
+    activity_name VARCHAR(255) NOT NULL,
+    
+    CONSTRAINT uses_unique UNIQUE (activity_name(100))
   )
 ;
 
 CREATE TABLE Terrains
   ( 
     terrain_id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    terrain_type VARCHAR(255) NOT NULL
+    terrain_type VARCHAR(255) NOT NULL,
+    
+    CONSTRAINT terrains_unique UNIQUE (terrain_type(100))
   )
 ;
 
 CREATE TABLE Amenities
   ( 
     amenity_id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    amenity_name VARCHAR(255) NOT NULL
+    amenity_name VARCHAR(255) NOT NULL,
+    
+    CONSTRAINT amenities_unique UNIQUE (amenity_name(100))
   )
 ;
 
@@ -147,5 +156,5 @@ CREATE TABLE AmenitiesAtPark
 ;
 
 -- print a list of the existing tables, so we can check that everything is there
-SHOW TABLES;
+--SHOW TABLES;
 
