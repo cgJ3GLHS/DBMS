@@ -1,7 +1,7 @@
 -- junction tables
 DROP TABLE IF EXISTS TerrainsOnTrails;
 DROP TABLE IF EXISTS TrailUses;
-DROP TABLE IF EXISTS ParksOnTrail;
+DROP TABLE IF EXISTS ParksOnTrails;
 DROP TABLE IF EXISTS AmenitiesAtPark;
 
 -- 3rd level tables
@@ -133,7 +133,7 @@ CREATE TABLE TrailUses
   )
 ;
 
-CREATE TABLE ParksOnTrail
+CREATE TABLE ParksOnTrails
   ( 
     parkontrail_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     trail_id       INT NOT NULL,

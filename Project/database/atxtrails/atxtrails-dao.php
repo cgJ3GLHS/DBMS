@@ -14,7 +14,7 @@ function ConnectDB()
 {
   $host     = "localhost";
   $username = "atxtrails";
-  $password = "";  #redacted :)
+  $password = "BwTc935ZfUd4rom2";  #redacted :)
   $database = "atxtrails";
   
   if ($link = mysqli_connect($host, $username, $password, $database))
@@ -53,8 +53,56 @@ function DisconnectDB($link)
 #
 # OUT: array of query results
 #------------------------------------------------------------------------------
-function RunQuerySelect($link, $query)
-{
+function RunQuerySelect($link, $query, $paramTypes, $params)
+{# TODO - add dynamic binding
+  
+  # Log fn call and parameters
+  LogMessage("RunQuerySelect called");
+  #LogMessage("  link=$link");
+  LogMessage("  query=$query");
+  LogMessage("  paramTypes=$paramTypes");
+  LogMessage("  params=");
+  foreach ($params as $k => $v)
+  {
+    LogMessage("    $k => $v");
+  }
+    
+  # prepare query
+  $stmt = $link->prepare("$query");
+  #LogMessage("After prepare stmt is $stmt");
+  LogMessage("    stmt type is " . gettype($stmt));
+  if ($stmt == TRUE)
+  { LogMessage("stmt is true"); }
+  else
+  { LogMessage("stmt is false"); }
+  
+  if ($params != NULL)
+  {
+    LogMessage("In RunQuerySelect got a param list, processing...");
+    
+    # put param type string on beginning of array
+    array_unshift($params, $paramTypes);
+    
+    #$stmt->bind_param("sss", $firstname, $lastname, $email); # normal bind template
+    #$ref = new ReflectionClass('mysqli_stmt');
+    #$method = $ref->getMethod("bind_param");
+    #$method->invokeArgs($stmt, $params);
+    
+    # bind parameters
+    call_user_func_array([$stmt, 'bind_param'], $params);
+  }
+  
+/*  
+$db     = new mysqli("localhost","root","","tests");
+$res    = $db->prepare("INSERT INTO test SET foo=?,bar=?");
+$refArr = array("si","hello",42);
+$ref    = new ReflectionClass('mysqli_stmt');
+$method = $ref->getMethod("bind_param");
+$method->invokeArgs($res,$refArr);
+$res->execute();  
+*/  
+  
+  
   $result = mysqli_query($link, $query);
   
   $arrindex = 0;
@@ -97,7 +145,7 @@ SELECT  min($field) AS tier0,
 HEREQUERY;
 
   $dblink=ConnectDB();
-  $res=RunQuerySelect($dblink, $query);
+  $res=RunQuerySelect($dblink, $query, NULL, NULL);
   DisconnectDB($dblink);
   
   return $res;
@@ -181,7 +229,7 @@ function DAO_GetCostRanges()
 #
 # OUT: Array of the length ranges.
 #------------------------------------------------------------------------------
-function DAO_GetCostRanges()
+function DAO_GetLengthRanges()
 {
   $res = GetRangeStringsFromData("Trails", "length");
   
@@ -285,13 +333,68 @@ HEREQUERY;
 }
 
 #------------------------------------------------------------------------------
+# Function AddFiltersClause
+#
+# Creates a query where clause part for adding to a query
+#
+# IN: $filtersToCheck - array of filter values for this field
+#     $sourceField - source field in the database to be filtered on
+#     $parameterType - type specification character (see https://secure.php.net/manual/en/mysqli-stmt.bind-param.php)
+#     &$activatedFilters - int count of how many filters have been activated
+#     &$parameterList - array of parameters to be used in prepared query
+#     &$types - string of type parameters to be passed to the prepared query bind
+#
+# OUT: Filter clause to be added to the query
+#------------------------------------------------------------------------------
+function AddFiltersClause($filtersToCheck, $sourceField, $parameterType, &$activatedFilters, &$parameterList, &$types)
+{
+  $query = "";
+  
+  # add city filter clause
+  if ($filtersToCheck != NULL)
+  {
+    # in each filter type we want to add an AND if it is not the first
+    if ($activatedFilters > 0)
+    {
+      $query .= "     AND\n";
+    }
+    $activatedFilters++; # flag that a filter has been activated
+    
+    
+    $query .= "       (    ";
+    # count interations so we can add an OR to any beyond 0
+    $i = 0;
+    foreach ($filtersToCheck as $k => $v)
+    {
+      # need an or for multiple values after the first one
+      if ($i != 0)
+      {
+        $query .= "         OR ";
+      }
+      
+      # add city to filter
+      $query .= "$sourceField = ?\n";
+      
+      # add parameter to list and type string
+      $parameterList[] = $v;
+      $types .= $parameterType;
+      
+      # increment iteration counter
+      $i++;
+    }
+    $query .= "       )\n";
+  }
+  
+  return $query;
+}
+
+#------------------------------------------------------------------------------
 # Function DAO_SearchTrails
 #
 # Gets a list of trails matching some criteria
 #
 # IN: Search Criteria
-#     
-#       $filterFlags     Array of bools to turn various filters on and off
+#       Each of these is an array of filter values
 #          city
 #          dog
 #          difficulty
@@ -305,18 +408,23 @@ HEREQUERY;
 # OUT: Array of matching trail ids.
 #------------------------------------------------------------------------------
 # TODO - this function I am currently working on...not done yet.
-function DAO_SearchTrails($filterFlags,   # array of bool
-                          $city,           # string
-                          
-                          $dogFriendly,          # bool
-                          
-                          $difficulties,        # array of strings
-                          
-                          $costRanges,    # array of strings
+function DAO_SearchTrails($city,
+                          $dog,
+                          $difficulty,
+                          $cost,
+                          $length,
+                          $bag,
+                          $use,
+                          $terrain,
+                          $amenity
                          )
 {
+  $activatedFilters = 0; # to count activated filters (any >0 require AND between)
+  $parameterList = NULL; # list of parameters to be run with the query
+  $paramTypes = NULL;    # string of parameter types
+  
   $query = <<<"HEREQUERY"
-SELECT trail_id
+SELECT Trails.trail_id
   FROM Trails
   
   LEFT JOIN TrailUses ON Trails.trail_id = TrailUses.trail_id
@@ -326,37 +434,67 @@ SELECT trail_id
   LEFT JOIN Terrains ON TerrainsOnTrails.terrain_id = Terrains.terrain_id
   
   LEFT JOIN ParksOnTrails ON Trails.trail_id = ParksOnTrails.trail_id
-  LEFT JOIN AmenitiesAtParks ON ParksOnTrails.park_id = AmenitiesAtParks.park_id
-  LEFT JOIN Amenities ON AmenitiesAtParks.amenity_id = Amenities.amenity_id
+  LEFT JOIN AmenitiesAtPark ON ParksOnTrails.park_id = AmenitiesAtPark.park_id
+  LEFT JOIN Amenities ON AmenitiesAtPark.amenity_id = Amenities.amenity_id
   
-  WHERE
+  LEFT JOIN Difficulties ON Trails.difficulty_id = Difficulties.difficulty_id
+  
 HEREQUERY;
   
-  if ($filterFlags['city'] == TRUE)
+  # if any filter flags are enabled we'll need a where clause
+  if (   $city != NULL
+      || $dog != NULL
+      || $difficulty != NULL
+      || $cost != NULL
+      || $length != NULL
+      || $bag != NULL
+      || $use != NULL
+      || $terrain != NULL
+      || $amenity != NULL
+     )
   {
-    $i = 0;
-    foreach ($city as $k = $v)
-    {
-      if 
-      $query .= "Trails.city = $v\n";
-    }
+    $query .= "WHERE\n";
   }
-  $query  = "SELECT trail_id";
-  $query .= "FROM Trails";
-  $query .= "WHERE";
-  $query .= "";
+  
+  # add filter clauses for each type of searchable field as necessary
+  $query .= AddFiltersClause($city, "Trails.city", "s", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($dog, "Trails.dog_friendly", "i", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($difficulty, "Difficulties.difficulty_rank", "s", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($cost, "Trails.price", "i", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($length, "Trails.length", "d", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($bag, "Trails.bag_stations", "i", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($use, "Uses.activity_name", "s", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($terrain, "Terrains.terrain_type", "s", $activatedFilters, $parameterList, $paramTypes);
+  $query .= AddFiltersClause($amenity, "Amenities.amenity_name", "s", $activatedFilters, $parameterList, $paramTypes);
+  
+  # DEBUG  - just for debugging to check the resulting query, remove this eventually
+  LogMessage("In DAO_SearchTrails built query:\n$query");
   
   $dblink=ConnectDB();
-  $res=RunQuerySelect($dblink, $query);
+  $res=RunQuerySelect($dblink, $query, $paramTypes, $parameterList);
   DisconnectDB($dblink);
   
   return $res;
 }
 
 #------------------------------------------------------------------------------
+# Function DAO_GetTrailData
+#
+# Gets complete data for a single trail
+#
+# IN: trail id
+#
+# OUT: all trail data
+#------------------------------------------------------------------------------
+function DAO_GetTrailData($trailid)
+{
+  # TODO make this!
+}
+
+#------------------------------------------------------------------------------
 # Function TestDAO
 #
-# For testing DAO Functionality
+# Scratch area for testing DAO Functionality
 #
 # IN: 
 #
@@ -364,10 +502,37 @@ HEREQUERY;
 #------------------------------------------------------------------------------
 function TestDAO()
 {
-  $dblink=ConnectDB();
-  $res=RunQuerySelect($dblink, "show tables");
-  print_r($res);
-  DisconnectDB($dblink);
+  #$dblink=ConnectDB();
+  #$res=RunQuerySelect($dblink, "show tables", NULL, NULL);
+  #print_r($res);
+  #DisconnectDB($dblink);
+  
+  $city = NULL;
+  $dog = NULL;
+  $difficulty = NULL;
+  $cost = NULL;
+  $length = NULL;
+  $bag = NULL;
+  $use = NULL;
+  $terrain = NULL;
+  $amenity = NULL;
+  
+  $city[0] = "Austin";
+  $city[1] = "Round Rock";
+  $dog[0] = "TRUE";
+  $difficulty[0] = "Moderate";
+  $difficulty[1] = "Strenuous";
+  
+  DAO_SearchTrails($city,
+                   $dog,
+                   $difficulty,
+                   $cost,
+                   $length,
+                   $bag,
+                   $use,
+                   $terrain,
+                   $amenity
+                  );
 }
 
 
