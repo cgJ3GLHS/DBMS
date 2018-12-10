@@ -1,0 +1,4 @@
+difficulty_id|difficulty_rank
+1|Varies
+2|Easier
+3|More Difficult

@@ -1,0 +1,6 @@
+use_id|activity_name
+1|Hike and Bike
+2|Hike
+3|Motorcycle
+4|Shared Use (Hike and Bike)
+5|Hike (Track)

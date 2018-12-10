@@ -1,0 +1,125 @@
+trail_id|name|address|city|zip|ada|length|difficulty_id
+1|Ann and Roy Butler Hike and Bike Trail|800 W. Riverside Drive|Austin|78704|Yes|10.17|1
+2|Archstone Greenbelt Trail|4307 Staggerbush|Austin|78749|No|0.48|2
+3|Balcones District Park Trail|12017 Amherst Drive|Austin|78759|No|1.3|3
+4|Barrington School Park Track|9306 Glenn Ln.|Austin|78753|No|0.22|2
+5|Barton Creek Greenbelt Trail|3753 S. Capital of Texas Hwy|Austin|78704|No|12.68|1
+6|Barton Hills School Park Track|2009 Homedale Dr.|Austin|78704|No|0.24|2
+7|Bauerle Ranch Park Trail|2700 Lynnbrook Dr.|Austin|78748|No|5.17|2
+8|Beverly S. Sheffield Northwest District Park Trail|6708 North Park Dr.|Austin|78757|No|0.52|2
+9|Blunn Creek Greenbelt Trail|1501 East Side Dr.|Austin|78704|Yes|0.88|2
+10|Blunn Creek Nature Preserve Trail|1200 St. Edwards Dr.|Austin|78704|No|1.02|3
+11|Boggy Creek Greenbelt Trail|811 Nile St.|Austin|78702|Yes|1.17|2
+12|Brentwood Neighborhood Park Trail|6807 Yates Ave. |Austin|78757|No|0.17|2
+13|Bull Creek District Trail|6713 Lakewood Dr.|Austin|78731|No|0.9|3
+14|Butler Metro Park Trail|1000 Barton Springs Rd.|Austin|78704|Yes|2.1|2
+15|Butler Shores at Town Lake Metro Park Trail|200 S. Lamar Blvd. |Austin|78704|Yes|0.42|2
+16|Buttermilk Branch Greenbelt Trail|7402 Blessing Ave.|Austin|78752|No|0.6|2
+17|Cherrywood Pocket Park Trail|1600 E. 34th St.|Austin|78722|No|0.05|2
+18|Chris Mosqueda Trail|1041 Mearns Meadow Blvd.|Austin|78758|No|0.39|2
+19|Circle C Ranch Metro Park Trail|6301 W. Slaughter Ln.|Austin|78739|Yes|2.93|2
+20|Civitan Neighborhood Park Trail|513 Vargas Rd.|Austin|78741|No|0.24|2
+21|Colony District Park Trail|7201 Colony Loop Dr.|Austin|78724|No|0.26|1
+22|Colorado River Wildlife Sanctuary|5827 Levander Loop|Austin|78702|No|0.35|2
+23|Commons Ford Ranch Metro Park|614 N. Commons Ford Rd. |Austin|78733|No|2|1
+24|Convict Hill Quarry Neighborhood Park Trail|6511 Convict Hill Rd.|Austin|78749|No|0.32|2
+25|Cook School Park Track|1505 Cripple Creek Dr.|Austin|78758|No|0.2|2
+26|Copperfield Trails|1425 E. Yager Ln.|Austin|78753|No|2.22|2
+27|Country Club Creek Trail|1005 S. Pleasant Valley Rd.|Austin|78741|Yes|1.97|2
+28|Cunningham School Park Track|6213 Buffalo Pass|Austin|78745|No|0.19|2
+29|Davis/White Northeast Neighborhood Park Trail|5700 Loyola Ln.|Austin|78724|No|0.57|2
+30|Dick Nichols District Park Connection Trail|1525 Convict Hill Rd.|Austin|78749|Yes|0.87|2
+31|Dick Nichols District Park Loop Trail|8011 Beckett Rd.|Austin|78749|Yes|1.08|2
+32|Dittmar District Park Loop|1009 W Dittmar Rd.|Austin|78745|No|0.21|2
+33|Dittmar District Park Trail|1009 W Dittmar Rd.|Austin|78745|Yes|0.21|2
+34|Doss School Park Track|7013 Northledge Dr.|Austin|78731|No|0.14|2
+35|Dottie Jordan Neighborhood Park Trail|2901 Loyola Ln.|Austin|78723|No|0.24|2
+36|Dove Springs District Park Loop|5801 Ainez Dr.|Austin|78744|Yes|0.58|2
+37|Dove Springs District Park Trail|5801 Ainez Dr.|Austin|78744|Yes|1.27|2
+38|East Boggy Creek Greenbelt Trail|5200 Bolm Rd.|Austin|78721|No|1.6|2
+39|Eastwoods Neighborhood Park Trail|3001 Harris Park Ave.|Austin|78705|No|0.55|2
+40|Edward Rendon Sr Metro Park at Festival Beach Trail|28 Robert Martinez Jr St.|Austin|78702|Yes|0.18|2
+41|Eilers (Deep Eddy) Neighborhood Park Trail|301 Deep Eddy Ave.|Austin|78703|Yes|0.35|2
+42|Emma Long Metro Park Motorcycle Trails|7700 Oak Shores|Austin|78730|No|8.38|3
+43|Emma Long Metro Park Turkey Creek Trail|2100 City Park Rd.|Austin|78730|No|1.92|3
+44|Franklin Neighborhood Park Trail|4800 Copperbend Blvd.|Austin|78744|Yes|0.39|2
+45|Gaines Creek Neighborhood Park Trail|4801 Republic of Texas Blvd.|Austin|78735|No|0.72|2
+46|Garrison District Park Trail|6001 Manchaca Rd.|Austin|78745|No|0.71|2
+47|Gillis Park Neighborhood Park Trail|2410 Durwood St.|Austin|78704|No|0.39|2
+48|Gracywoods Neighborhood Park Trail|12007 Bittern Holw.|Austin|78758|Yes|1|2
+49|Great Hills Neighborhood Park Trail|10801 Sierra Oaks|Austin|78759|No|1.82|2
+50|Gullett School Park Track|6200 Treadwell Blvd.|Austin|78757|Yes|0.16|2
+51|Gustavo "Gus" L. Garcia District Park Trail|1201 E Rundberg Ln.|Austin|78753|No|1.21|2
+52|Hill School Park Track|8405 Tallwood Dr.|Austin|78759|No|0.15|2
+53|Houston School Park Track|5506 Tallow Tree Dr.|Austin|78744|No|0.17|2
+54|Hubert C. Schroeter Neighborhood Park Trail|11713 Big Trl.|Austin|78759|Yes*|0.91|2
+55|Johnson Creek Greenbelt Trail|2100 Veterans Dr.|Austin|78703|Yes*|1.53|2
+56|Joslin Neighborhood Park Track|2106 Cimarron Trl.|Austin|78745|No|0.23|2
+57|Kealing School Park Track|1600 Rosewood Ave.|Austin|78702|Yes*|0.18|2
+58|Kealing School Park Trail|1600 Rosewood Ave.|Austin|78702|Yes*|0.21|2
+59|Kendra Page Neighborhood Park Trail|2203 Blue Meadow Dr.|Austin|78744|No|0.25|2
+60|Lamar Beach at Town Lake Metro Park Trail|1156 W Cesar Chavez St.|Austin|78703|Yes*|0.28|2
+61|Latta Branch Greenbelt Trail|7910 Beckett Rd.|Austin|78749|No|1.76|2
+62|Little Zilker Neighborhood Park Track|2100 Bluebonnet Ln.|Austin|78704|Yes*|0.49|2
+63|Longview Neighborhood Park Trail|7609 Longview Rd.|Austin|78745|Yes*|0.43|2
+64|Lower Bull Creek Greenbelt Trail|5307 Old Spicewood Springs Rd.|Austin|78731|No|4.05|1
+65|Mabel Davis District Park Trail|3427 Parker Ln.|Austin|78741|No|1.1|2
+66|Mary Moore Searight Metro Park Equestrian Trail|907 W Slaughter Ln.|Austin|78748|No|2.07|2
+67|Mary Moore Searight Metro Park Off-Leash Trail|9500 S 1st St.|Austin|78748|No|1.22|2
+68|Mary Moore Searight Metro Park Trail|907 W Slaughter Ln.|Austin|78748|Yes*|3.97|2
+69|Mayfield Nature Preserve Trail|3805 W 35th St.|Austin|78703|No|1|3
+70|Metz Neighborhood Park Trail|2401 Canterbury St.|Austin|78702|No|0.09|2
+71|Montopolis Neighborhood Park Trail|1200 Montopolis Dr.|Austin|78741|No|0.27|2
+72|Mount Bonnell at Covert Park Trail|3800 Mount Bonnell Rd.|Austin|78731|No|0.32|3
+73|Nicholas Dawson Neighborhood Park Trail|704 W James St.|Austin|78704|No|0.17|2
+74|North Oaks Neighborhood Park Trail|820 Plaza Dr.|Austin|78753|No|0.18|2
+75|North Star Greenbelt Trail|11701 Tallow Field Way|Austin|78758|Yes*|1.46|2
+76|Northwest Balcones Neighborhood Park Trail|10207 Talleyran Dr.|Austin|78750|Yes*|0.17|2
+77|Oak Springs School Park Track|2806 Goodwin Ave.|Austin|78702|No|0.13|2
+78|Oakview Neighborhood Park Trail|10810 Oak View Dr.|Austin|78759|Yes*|0.53|2
+79|Odom School Park Track|1001 Sahara Ave.|Austin|78745|No|0.13|2
+80|Onion Creek Greenbelt Trail|7002 Onion Creek Dr.|Austin|78744|No|2.16|2
+81|Ortega School Park Track|5308 Chico St.|Austin|78721|Yes*|0.33|2
+82|Parque Zaragoza Neighborhood Park Trail|2608 Gonzales St.|Austin|78702|No|0.12|2
+83|Patterson Neighborhood Park Trail|4200 Brookview Rd.|Austin|78722|Yes*|0.73|2
+84|Payton Gin Pocket Park Trail|801 Payton Gin Rd.|Austin|78753|No|0.11|2
+85|Peace Point at Town Lake Metro Park Trail|2200 S Lakeshore Blvd.|Austin|78741|Yes*|0.13|2
+86|Pecan Springs School Park Track|3312 Rogge Ln.|Austin|78723|No|0.13|2
+87|Perry Neighborhood Park Track|4800 Fairview Dr.|Austin|78731|No|0.4|2
+88|Pillow School Park Track|8500 Rockwood Ln.|Austin|78757|Yes*|0.23|2
+89|Quail Creek Neighborhood Park Trail|1101 Mearns Meadow Blvd.|Austin|78758|No|0.21|2
+90|Red Bud Isle Park Trail|3401 Red Bud Trl.|Austin|78746|No|0.52|2
+91|Reilly School Park Track|301 Denson Dr.|Austin|78752|No|0.21|2
+92|Riata Neighborhood Park Trail|12403 Riata Trace Pkwy.|Austin|78727|No|0.88|2
+93|Roy G Guerrero Colorado River Metro Park Trail|400 Grove Blvd.|Austin|78741|No|1.91|2
+94|Sanchez School Park Track|64 Waller St.|Austin|78702|No|0.18|2
+95|Scofield Farms Neighborhood Park Trail|12901 Scofield Farms Dr.|Austin|78727|Yes*|0.35|2
+96|Shoal Creek Greenbelt Trail and Sidewalk|2610 Shoal Creek Blvd.|Austin|78703|Yes*|6.82|2
+97|Spicewood Valley Trail|11103 Callanish Park Dr.|Austin|78750|No|1.32|3
+98|Springdale Neighborhood Park Trail|1175 Nickols Ave.|Austin|78721|No|0.21|2
+99|Springfield Neighborhood Park Trail|6500 E William Cannon Dr.|Austin|78744|No|0.66|1
+100|Springwoods Neighborhood Park Trail|12407 Burr Ridge Dr.|Austin|78729|Yes*|0.85|2
+101|St. Edwards Greenbelt Trail|7301 Spicewood Springs Rd.|Austin|78759|No|3.59|1
+102|St. Elmo School Park Track|4312 S 1st St.|Austin|78745|No|0.17|2
+103|Stephenson Nature Preserve and Outdoor Education Center Trail|7009 Stage Coach Trl.|Austin|78745|No|4.08|3
+104|Stillhouse Hollow Nature Preserve Trail|7810 Sterling Dr.|Austin|78731|No|0.3|3
+105|T. A. Brown School Park Track|520 Northway Dr.|Austin|78752|No|0.15|2
+106|Tanglewood Neighborhood Park Trail|11409 Rustic Rock Rd.|Austin|78750|Yes*|0.48|2
+107|Triangle Commons Pocket Park Trail|4510 W Guadalupe St.|Austin|78751|Yes*|0.3|2
+108|Upper Bull Creek Greenbelt Trail|7301 Spicewood Springs Rd.|Austin|78759|No|2.44|1
+109|The Veloway at Circle C Ranch Metro Park|4900 La Crosse Ave.|Austin|78739|No|3.11|2
+110|Waller Beach at Town Lake Metro Park|507 Waller St.|Austin|78702|Yes*|0.2|1
+111|Waller Creek Greenbelt Trail|500 E 12th St.|Austin|78701|Yes*|1.59|1
+112|Walnut Bluffs Trail|11938 Oakbrook Dr.|Austin|78753|No|0.6|2
+113|Walnut Creek Metropolitan Park Intermediate Trail|12138 N Lamar Blvd.|Austin|78753|No|10|3
+114|Walnut Creek Metropolitan Park Trail|12138 N Lamar Blvd.|Austin|78753|No|5.32|1
+115|Walter E. Long Metro Park Loop Trail|6707 Blue Bluff Rd.|Austin|78724|No|2.64|2
+116|Waterloo Neighborhood Park Trail|1200 Red River St.|Austin|78701|Yes*|0.61|2
+117|Westenfield Neighborhood Park Trail|1601 Sharon Ln.|Austin|78703|Yes*|0.2|2
+118|West Bouldin Creek Greenbelt Trail|1200 S 6th St.|Austin|78704|No|0.92|2
+119|Williams School Park Track|605 Blue Valley Dr.|Austin|78748|No|0.21|2
+120|Wooldridge School Park Track|1410 Norseman Ter.|Austin|78758|No|0.18|2
+121|Wooten Neighborhood Trail|1500 Dale Dr.|Austin|78757|Yes*|0.17|2
+122|Yett Creek Neighborhood Park Trail|12523 West Cow Path|Austin|78727|No|1.54|2
+123|Zilker Nature Preserve Trail|310 Nature Center Dr.|Austin|78746|No|1.17|1
+124|Zilker Metro Park Loop|2201 Barton Springs Rd.|Austin|78746|Yes*|1.99|3

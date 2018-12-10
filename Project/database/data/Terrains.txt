@@ -1,0 +1,19 @@
+terrain_id|terrain_type
+1|Hard Surface
+2|Native Material
+3|Water
+4|Imported Material
+5|Chunk Wood
+6|Hard Surface, Imported Material
+7|Native Material, Water
+8|Imported Material, Native Material
+9|Imported Material, Native Material, Water
+10|Chunk Wood, Native Material
+11|Chunk Wood, Imported Material
+12|Hard Surface, Imported Material, Native Material
+13|Hard Surface, Imporrted Material, Water
+14|Hard Surface, Native Material, Water
+15|Chunk Wood, Native Material, Water
+16|Hard Surface, Imported Material, Native Material, Water
+17|Chunk Wood, Hard Surface, Imported Material, Native Material
+18|Hard Surface, Native Material
