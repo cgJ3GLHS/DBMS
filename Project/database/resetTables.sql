@@ -38,11 +38,11 @@ CREATE TABLE Trails
     ada           VARCHAR(255),
     length        FLOAT,
     lengthUnits   CHAR(15),
-    price         INT,
+    price         INT,         --not using
     difficulty_id INT,
-    dog_friendly  BOOLEAN,
-    off_leash     BOOLEAN,
-    bag_stations  BOOLEAN,
+    dog_friendly  BOOLEAN,     --not using
+    off_leash     BOOLEAN,     --not using
+    bag_stations  BOOLEAN,     --not using
     
     CONSTRAINT fk_trail_diff FOREIGN KEY (difficulty_id) REFERENCES Difficulties (difficulty_id),
     CONSTRAINT trails_unique UNIQUE (name(100), address(100))
@@ -79,7 +79,7 @@ CREATE TABLE Terrains
 
 CREATE TABLE Amenities
   ( 
-    amenity_id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    amenity_id   INT NOT NULL AUTO_INCREMENT PRIMARY KEY,  --not using
     amenity_name VARCHAR(255) NOT NULL,
     
     CONSTRAINT amenities_unique UNIQUE (amenity_name(100))
@@ -118,7 +118,7 @@ CREATE TABLE TerrainsOnTrails
     terrain_id INT NOT NULL,
     
     CONSTRAINT fk_tot_trail   FOREIGN KEY (trail_id) REFERENCES Trails (trail_id),
-    CONSTRAINT fk_tot_terrain FOREIGN KEY (trail_id) REFERENCES Terrains (terrain_id)
+    CONSTRAINT fk_tot_terrain FOREIGN KEY (terrain_id) REFERENCES Terrains (terrain_id)
   )
 ;
 
