@@ -14,7 +14,7 @@ function ConnectDB()
 {
   $host     = "localhost";
   $username = "atxtrails";
-  $password = "";  #redacted :)
+  $password = "BwTc935ZfUd4rom2";  #redacted :)
   $database = "atxtrails";
   
   if ($link = mysqli_connect($host, $username, $password, $database))
@@ -71,10 +71,12 @@ function RunQuerySelect($link, $query, $paramTypes, $params)
 #------------------------------------------------------------------------------
 function RunQuerySelect($link, $query)
 {
+  LogMessage("Running query:\n$query");
+  
   $result = mysqli_query($link, $query);
     
   $arrindex = 0;
-  while ($row = mysqli_fetch_array($result))
+  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
   {
     $resultArray[$arrindex] = $row;
     $arrindex++;
@@ -516,16 +518,33 @@ HEREQUERY;
 #
 # IN: trail id
 #
-# OUT: all trail data
+# OUT: all connected trail data
 #------------------------------------------------------------------------------
 function DAO_GetTrailData($trailid)
 {
   # TODO in progress!
   
   $query = <<<"HEREQUERY"
-SELECT *
+SELECT Trails.trail_id,
+       Trails.name,
+       Trails.address,
+       Trails.city,
+       Trails.zip,
+       Trails.ada,
+       Trails.length,
        
-  FROM Trails
+       Uses.activity_name,
+       
+       Terrains.terrain_type,
+       
+       Trailheads.gps_lat,
+       Trailheads.gps_long,
+       
+       Scores.score,
+       Scores.score_link
+       
+       
+FROM Trails
   
   LEFT JOIN TrailUses ON Trails.trail_id = TrailUses.trail_id
   LEFT JOIN Uses ON TrailUses.use_id = Uses.use_id
@@ -533,14 +552,25 @@ SELECT *
   LEFT JOIN TerrainsOnTrails ON Trails.trail_id = TerrainsOnTrails.trail_id
   LEFT JOIN Terrains ON TerrainsOnTrails.terrain_id = Terrains.terrain_id
   
+  LEFT JOIN Trailheads ON Trails.trail_id = Trailheads.trail_id
+  
+  LEFT JOIN Scores ON Trails.trail_id = Scores.trail_id
+  
   LEFT JOIN ParksOnTrails ON Trails.trail_id = ParksOnTrails.trail_id
   LEFT JOIN AmenitiesAtPark ON ParksOnTrails.park_id = AmenitiesAtPark.park_id
   LEFT JOIN Amenities ON AmenitiesAtPark.amenity_id = Amenities.amenity_id
   
   LEFT JOIN Difficulties ON Trails.difficulty_id = Difficulties.difficulty_id
-  
+
 HEREQUERY;
   
+  $query .= "WHERE Trails.trail_id = $trailid";
+  
+  $dblink=ConnectDB();
+  $res=RunQuerySelect($dblink, $query);
+  DisconnectDB($dblink);
+  
+  return $res;
 }
 
 #------------------------------------------------------------------------------
@@ -569,19 +599,23 @@ function TestDAO()
   $difficulty[1] = "'Easier'";
   $terrain[0] = "'Imported Material'";
   
-  $searchResult = DAO_SearchTrails($difficulty,
-                                   $length,
-                                   $use,
-                                   $terrain
-                                  );
-  LogMessage($searchResult);
-  print_r($searchResult);
+  #$searchResult = DAO_SearchTrails($difficulty,
+  #                                 $length,
+  #                                 $use,
+  #                                 $terrain
+  #                                );
+  #LogMessage($searchResult);
+  #print_r($searchResult);
                   # on results page display
                   # name
                   # terrain
                   # difficulty
                   
   #print_r(DAO_GetUses());
+  
+  $traildata=DAO_GetTrailData(5);
+  print_r($traildata);
+  
 }
 
 
