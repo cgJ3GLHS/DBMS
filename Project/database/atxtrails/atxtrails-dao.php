@@ -14,7 +14,7 @@ function ConnectDB()
 {
   $host     = "localhost";
   $username = "atxtrails";
-  $password = "";  #redacted :)
+  $password = "BwTc935ZfUd4rom2";  #redacted :)
   $database = "atxtrails";
   
   if ($link = mysqli_connect($host, $username, $password, $database))
