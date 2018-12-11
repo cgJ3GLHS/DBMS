@@ -14,7 +14,7 @@ function ConnectDB()
 {
   $host     = "localhost";
   $username = "atxtrails";
-  $password = "";  #redacted :)
+  $password = "BwTc935ZfUd4rom2";  #redacted :)
   $database = "atxtrails";
   
   if ($link = mysqli_connect($host, $username, $password, $database))
@@ -561,7 +561,7 @@ function DAO_SearchTrails($difficulty,
   $query = <<<"HEREQUERY"
 SELECT Trails.trail_id,
        Trails.name,
-       Terrains.terrain_type,
+       GROUP_CONCAT(DISTINCT Terrains.terrain_type SEPARATOR ', ') AS terrain_type,
        Difficulties.difficulty_rank
        
   FROM Trails
@@ -596,6 +596,8 @@ HEREQUERY;
   $query .= AddFiltersClause($terrain, "Terrains.terrain_type", $activatedFilters);
   
   $query .= AddBoudnaryFiltersClause($length, "Trails", "length", $activatedFilters);
+  
+  $query .= "GROUP BY Trails.trail_id";
   
   # log the built query just so we can check it
   LogMessage("In DAO_SearchTrails built query:\n$query");
