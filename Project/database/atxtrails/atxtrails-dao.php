@@ -14,7 +14,7 @@ function ConnectDB()
 {
   $host     = "localhost";
   $username = "atxtrails";
-  $password = "";  #redacted :)
+  $password = "BwTc935ZfUd4rom2";  #redacted :)
   $database = "atxtrails";
   
   if ($link = mysqli_connect($host, $username, $password, $database))
@@ -106,8 +106,14 @@ function RunQuerySelect($link, $query)
 # OUT: array of query results
 #------------------------------------------------------------------------------
 function RunQuerySelectPrep($link, $query, $paramTypes, $params)
-{# TODO - add dynamic binding
-  
+{# TODO - add dynamic binding?
+ # after looking into this for a while it seems mysqli wants you to bind
+ # specific numbers of parameters for both input and output.
+ # found a workaround for input but while looking for output options I'm
+ # seeing there is another framework called "PDO" that makes it easier
+ # to do a generalized function like this.  We likely won't rewrite this all
+ # w/PDO for this release but keeping it in mind for future iterations/projects
+ 
   # Log fn call and parameters
   LogMessage("RunQuerySelect called");
   #LogMessage("  link=$link");
@@ -386,7 +392,7 @@ HEREQUERY;
 #
 # IN: 
 #
-# OUT: Array of the cities.
+# OUT: Array of amenities.
 #------------------------------------------------------------------------------
 function DAO_GetAmenities()
 {
@@ -457,11 +463,12 @@ function AddFiltersClause($filtersToCheck, $sourceField, &$activatedFilters)
 }
 
 #------------------------------------------------------------------------------
-# Function AddFiltersClause
+# Function AddBoudnaryFiltersClause
 #
-# Creates a query where clause part for adding to a query
+# generates a </> boundary clause for a query based on filter ranges
 #
 # IN: $filtersToCheck - array of filter values for this field
+#     $sourceTable - source table in the database to be filtered on
 #     $sourceField - source field in the database to be filtered on
 #     &$activatedFilters - int count of how many filters have been activated
 #
@@ -535,19 +542,14 @@ function AddBoudnaryFiltersClause($filtersToCheck, $sourceTable, $sourceField, &
 #
 # IN: Search Criteria
 #       Each of these is an array of filter values
-#          city
-#          dog
 #          difficulty
-#          cost
 #          length
-#          bag
 #          use
 #          terrain
-#          amenity
 #
 # OUT: Array of matching trail ids.
 #------------------------------------------------------------------------------
-# TODO - this function I am currently working on...not done yet.
+#
 function DAO_SearchTrails($difficulty,
                           $length,
                           $use,

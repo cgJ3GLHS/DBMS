@@ -2,11 +2,11 @@
 <?php
 #==============================================================================
 # 
-# Users: jmo2525, , , 
+# Users: jmo2525, kc26989, zjb422, ap47644
 # Assignment: atxtrails
-# Date: 2018-12-05
+# Date: 2018-12-10
 # Filename: atxtrails.php
-# URL: 
+# URL: http://hornet.ischool.utexas.edu/atxtrails/atxtrails.php
 # 
 #==============================================================================
 
