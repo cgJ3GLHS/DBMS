@@ -69,9 +69,8 @@ include('atxtrails-processform.php');
 # Main
 #------------------------------------------------------------------------------
 
-# add header and main menu
-include('../sharedres/header.html');
-#include('../menu/menu.html');
+# add header
+include('header.html');
 
 
 if (   $_SERVER['REQUEST_METHOD'] == 'POST'
@@ -92,7 +91,7 @@ else
 }
 
 
-include('../sharedres/footer.html');
+include('footer.html');
 
 ?>
 <!-- ################ END atxtrails.php ################ -->
