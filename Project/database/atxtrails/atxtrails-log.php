@@ -12,7 +12,7 @@
 #      else return false
 #------------------------------------------------------------------------------
 function LogMessage($message)
-{
+{/* DISABLED
   $logFile="../../atxtrails-logs/atxtrails.log";
   $date=date('Y-m-d H:i:s.u');
   
@@ -32,8 +32,7 @@ function LogMessage($message)
   else
   {
     return false;
-  }
-
+  } */
 }
 
 ?>
