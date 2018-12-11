@@ -24,10 +24,19 @@ function DisplayTrail($trailid)
     $ada     = $row['ada'];
     $length  = $row['length'];
     $uses[]       = $row['activity_name'];
+    $terrains[]   = $row['terrain_type'];
     $gpsLat[]     = $row['gps_lat'];
     $gpsLong[]    = $row['gps_long'];
     $score[]      = $row['score'];
     $score_link[] = $row['score_link'];
+    
+    # remove duplicates
+    $uses       = array_unique($uses);
+    $terrains   = array_unique($terrains);
+    $gpsLat     = array_unique($gpsLat);
+    $gpsLong    = array_unique($gpsLong);
+    $score      = array_unique($score);
+    $score_link = array_unique($score_link);
     
     LogMessage("DisplayTrail Data for trail $trailid");
     foreach ($v as $k2 => $v2)
@@ -35,8 +44,6 @@ function DisplayTrail($trailid)
       LogMessage("$k2 => $v2 <br>\n");
     }
   }
-  
-  print "<hr></hr>\n";
   
   print "<table border=\"1\">\n";
   print "  <tr><td colspan=\"2\" align=\"center\"><h2>$name</h2></td></tr>\n";
@@ -47,6 +54,14 @@ function DisplayTrail($trailid)
   # multiple uses
   print "  <tr><td>Uses:</td>\n    <td>\n";
   foreach ($uses as $k => $v)
+  {
+    print "    $v<br>\n";
+  }
+  print "    </td>\n  </tr>\n";
+  
+  # multiple terrains
+  print "  <tr><td>Terrains:</td>\n    <td>\n";
+  foreach ($terrains as $k => $v)
   {
     print "    $v<br>\n";
   }
@@ -66,7 +81,7 @@ function DisplayTrail($trailid)
   # multiple scores
   print "  <tr><td>Ratings:</td><td>";
   print "<table border=\"1\">";
-  print "<tr><td>Score /5</td><td>Score Link</td></tr>";
+  print "<tr><td>Score/5</td><td>Score Link</td></tr>";
   foreach ($score as $k => $v)
   {
     print "<tr><td>$score[$k]</td><td><a href=\"$score_link[$k]\">$score_link[$k]</a></td></tr>";
