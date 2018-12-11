@@ -74,7 +74,11 @@ function RunQuerySelect($link, $query)
   LogMessage("Running query:\n$query");
   
   $result = mysqli_query($link, $query);
-    
+  if ($result == FALSE)
+  {
+    LogMessage(mysqli_error($link));
+  }
+  
   $arrindex = 0;
   while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
   {
@@ -207,33 +211,33 @@ HEREQUERY;
 function GetRangeStringsFromData($table, $field)
 {
   $query = <<<"HEREQUERY"
-SELECT CONCAT( min($field),
+SELECT CONCAT( round(min($field), 2),
                ' - <',
-               (min($field) + ( 1 * FLOOR((max($field) - min($field))/4)))
+               round((min($field) + ( 1 * FLOOR((max($field) - min($field))/4))), 2)
              ) AS tier
   FROM $table
 
 UNION ALL
 
-SELECT CONCAT( (min($field) + ( 1 * FLOOR((max($field) - min($field))/4))),
+SELECT CONCAT( round((min($field) + ( 1 * FLOOR((max($field) - min($field))/4))), 2),
                ' - <',
-               (min($field) + ( 2 * FLOOR((max($field) - min($field))/4)))
+               round((min($field) + ( 2 * FLOOR((max($field) - min($field))/4))), 2)
              ) AS tier
   FROM $table
 
 UNION ALL
 
-SELECT CONCAT( (min($field) + ( 2 * FLOOR((max($field) - min($field))/4))),
+SELECT CONCAT( round((min($field) + ( 2 * FLOOR((max($field) - min($field))/4))), 2),
                ' - <',
-               (min($field) + ( 3 * FLOOR((max($field) - min($field))/4)))
+               round((min($field) + ( 3 * FLOOR((max($field) - min($field))/4))), 2)
              ) AS tier
   FROM $table
 
 UNION ALL
 
-SELECT CONCAT( (min($field) + ( 3 * FLOOR((max($field) - min($field))/4))),
+SELECT CONCAT( round((min($field) + ( 3 * FLOOR((max($field) - min($field))/4))), 2),
                ' - ',
-               max($field)
+               round(max($field), 2)
              ) AS tier
   FROM $table
 
@@ -330,11 +334,11 @@ HEREQUERY;
 #------------------------------------------------------------------------------
 # Function DAO_GetDifficulties
 #
-# Gets a list of trail cities from the database
+# Gets a list of trail difficulties from the database
 #
 # IN: 
 #
-# OUT: Array of the cities.
+# OUT: Array of the difficulties.
 #------------------------------------------------------------------------------
 function DAO_GetDifficulties()
 {
@@ -342,6 +346,30 @@ function DAO_GetDifficulties()
 SELECT DISTINCT difficulty_rank
   FROM Difficulties
 ORDER BY difficulty_rank
+HEREQUERY;
+
+  $dblink=ConnectDB();
+  $res=RunQuerySelect($dblink, $query);
+  DisconnectDB($dblink);
+  
+  return $res;
+}
+
+#------------------------------------------------------------------------------
+# Function DAO_GetTerrains
+#
+# Gets a list of trail terrains from the database
+#
+# IN: 
+#
+# OUT: Array of the terrains.
+#------------------------------------------------------------------------------
+function DAO_GetTerrains()
+{
+  $query = <<<"HEREQUERY"
+SELECT DISTINCT terrain_type
+  FROM Terrains
+ORDER BY terrain_type
 HEREQUERY;
 
   $dblink=ConnectDB();
@@ -413,11 +441,83 @@ function AddFiltersClause($filtersToCheck, $sourceField, &$activatedFilters)
       }
       
       # add field to filter
-      $query .= "$sourceField = $v\n";
+      $query .= "$sourceField = '$v'\n";
       
       # add parameter to list and type string
       #$parameterList[] = $v;
       #$types .= $parameterType;
+      
+      # increment iteration counter
+      $i++;
+    }
+    $query .= "       )\n";
+  }
+  
+  return $query;
+}
+
+#------------------------------------------------------------------------------
+# Function AddFiltersClause
+#
+# Creates a query where clause part for adding to a query
+#
+# IN: $filtersToCheck - array of filter values for this field
+#     $sourceField - source field in the database to be filtered on
+#     &$activatedFilters - int count of how many filters have been activated
+#
+# OUT: Filter clause to be added to the query
+#------------------------------------------------------------------------------
+function AddBoudnaryFiltersClause($filtersToCheck, $sourceTable, $sourceField, &$activatedFilters)
+{
+  $query = "";
+  
+  $rangeBoudnaries = GetRangesFromData($sourceTable, $sourceField);
+  
+  $tier0 = $rangeBoudnaries[0]['tier0'];
+  $tier1 = $rangeBoudnaries[0]['tier1'];
+  $tier2 = $rangeBoudnaries[0]['tier2'];
+  $tier3 = $rangeBoudnaries[0]['tier3'];
+  $tier4 = $rangeBoudnaries[0]['tier4'];
+  
+  # add field filter clause
+  if ($filtersToCheck != NULL)
+  {
+    # in each filter type we want to add an AND if it is not the first
+    if ($activatedFilters > 0)
+    {
+      $query .= "     AND\n";
+    }
+    $activatedFilters++; # flag that a filter has been activated
+    
+    
+    $query .= "       (    ";
+    # count interations so we can add an OR to any beyond 0
+    $i = 0;
+    foreach ($filtersToCheck as $k => $v)
+    {
+      # need an or for multiple values after the first one
+      if ($i != 0)
+      {
+        $query .= "         OR ";
+      }
+
+      # add field range to filter      
+      if ($v == 'length-tier0')
+      {
+        $query .= "$tier0 <= $sourceField AND $sourceField < $tier1\n";
+      }
+      elseif ($v == 'length-tier1')
+      {
+        $query .= "$tier1 <= $sourceField AND $sourceField < $tier2\n";
+      }
+      elseif ($v == 'length-tier2')
+      {
+        $query .= "$tier2 <= $sourceField AND $sourceField < $tier3\n";
+      }
+      elseif ($v == 'length-tier3')
+      {
+        $query .= "$tier3 <= $sourceField AND $sourceField <= $tier4\n";
+      }
       
       # increment iteration counter
       $i++;
@@ -448,15 +548,10 @@ function AddFiltersClause($filtersToCheck, $sourceField, &$activatedFilters)
 # OUT: Array of matching trail ids.
 #------------------------------------------------------------------------------
 # TODO - this function I am currently working on...not done yet.
-function DAO_SearchTrails(#$city,
-                          #$dog,
-                          $difficulty,
-                          #$cost,
+function DAO_SearchTrails($difficulty,
                           $length,
-                          #$bag,
                           $use,
                           $terrain
-                          #, $amenity
                          )
 {
   $activatedFilters = 0; # to count activated filters (any >0 require AND between)
@@ -497,9 +592,10 @@ HEREQUERY;
   
   # add filter clauses for each type of searchable field as necessary
   $query .= AddFiltersClause($difficulty, "Difficulties.difficulty_rank", $activatedFilters);
-  $query .= AddFiltersClause($length, "Trails.length", $activatedFilters);
   $query .= AddFiltersClause($use, "Uses.activity_name", $activatedFilters);
   $query .= AddFiltersClause($terrain, "Terrains.terrain_type", $activatedFilters);
+  
+  $query .= AddBoudnaryFiltersClause($length, "Trails", "length", $activatedFilters);
   
   # log the built query just so we can check it
   LogMessage("In DAO_SearchTrails built query:\n$query");
